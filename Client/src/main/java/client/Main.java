@@ -45,11 +45,11 @@ public class Main extends Application {
 
 
        newGame.setOnMouseClicked((event) -> {
-           primaryStage.setTitle("Black Race");
-           primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
-           primaryStage.show();
+            primaryStage.setTitle("Black Race");
+            primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
+            primaryStage.show();
+        });
 
-       });
         options.setOnMouseClicked(event->menuBox.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event-> System.exit(0));
         optionsBack.setOnMouseClicked(event->menuBox.setSubMenu(mainMenu));

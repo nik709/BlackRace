@@ -15,7 +15,7 @@ public class Controller {
     public ImageView testCar3;
     public ImageView testCar4;
 
-    public int PlayersQuant = 2;
+    public int PlayersQuant = 4;
 
     Player[]player = new Player[PlayersQuant];
     String []PlayersNames = new String[PlayersQuant];

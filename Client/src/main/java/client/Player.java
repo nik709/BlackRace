@@ -41,21 +41,21 @@ public class Player extends Thread {
 
     @Override
     public void run() {
-        images[0] = "-fx-image: url(\"/resource/images/Player1.png\");";
-        images[1] = "-fx-image: url(\"/resource/images/Player1_Left.png\");";
-        images[2] = "-fx-image: url(\"/resource/images/Player1_Right.png\");";
+        images[0] = "-fx-image: url(\"/images/Player1.png\");";
+        images[1] = "-fx-image: url(\"/images/Player1_Left.png\");";
+        images[2] = "-fx-image: url(\"/images/Player1_Right.png\");";
 
-        images[3] = "-fx-image: url(\"/resource/images/Player2.png\");";
-        images[4] = "-fx-image: url(\"/resource/images/Player2_Left.png\");";
-        images[5] = "-fx-image: url(\"/resource/images/Player2_Right.png\");";
+        images[3] = "-fx-image: url(\"/images/Player2.png\");";
+        images[4] = "-fx-image: url(\"/images/Player2_Left.png\");";
+        images[5] = "-fx-image: url(\"/images/Player2_Right.png\");";
 
-        images[6] = "-fx-image: url(\"/resource/images/Player3.png\");";
-        images[7] = "-fx-image: url(\"/resource/images/Player3_Left.png\");";
-        images[8] = "-fx-image: url(\"/resource/images/Player3_Right.png\");";
+        images[6] = "-fx-image: url(\"/images/Player3.png\");";
+        images[7] = "-fx-image: url(\"/images/Player3_Left.png\");";
+        images[8] = "-fx-image: url(\"/images/Player3_Right.png\");";
 
-        images[9] = "-fx-image: url(\"/resource/images/Player4.png\");";
-        images[10] = "-fx-image: url(\"/resource/images/Player4_Left.png\");";
-        images[11] = "-fx-image: url(\"/resource/images/Player4_Right.png\");";
+        images[9] = "-fx-image: url(\"/images/Player4.png\");";
+        images[10] = "-fx-image: url(\"/images/Player4_Left.png\");";
+        images[11] = "-fx-image: url(\"/images/Player4_Right.png\");";
 
         car.setStyle(images[PlayerNum * 3]);
         car.setLayoutX(70 + PlayerNum * 175 + PlayerNum * 3);
@@ -108,7 +108,8 @@ public class Player extends Thread {
                     }
 
                     if (event.getCode() == KeyCode.ESCAPE) {
-                       System.exit(0);
+                        this.stop();
+                        System.exit(0);
                     }
                 });
 
