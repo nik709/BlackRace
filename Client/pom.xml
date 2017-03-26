@@ -6,6 +6,7 @@
 
     <groupId>BlackRace</groupId>
     <artifactId>Client</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.0-BUILD-SNAPSHOT</version>
 
     <parent>

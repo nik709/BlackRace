@@ -32,13 +32,14 @@ public class Main extends Application {
         root.getChildren().add(img);
 
         MenuItem newGame = new MenuItem("NEW GAME");
+        MenuItem connection = new MenuItem("CONNECT TO SERVER");
         MenuItem options = new MenuItem("OPTIONS");
         MenuItem exitGame = new MenuItem("EXIT");
-        SubMenu mainMenu = new SubMenu(newGame,options,exitGame);
+        SubMenu mainMenu = new SubMenu(newGame, connection, options, exitGame);
 
         MenuItem sound = new MenuItem("MUSIC");
         MenuItem optionsBack = new MenuItem("BACK");
-        SubMenu optionsMenu = new SubMenu(sound,optionsBack);
+        SubMenu optionsMenu = new SubMenu(sound, optionsBack);
 
         MenuBox menuBox = new MenuBox(mainMenu);
 
