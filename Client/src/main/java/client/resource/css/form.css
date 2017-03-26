@@ -1,0 +1,17 @@
+.root{
+    -fx-smooth: true;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
+
+}
+
+.fon{
+    -fx-image: url("/images/trace.jpg");
+    -fx-background-image: url("/images/trace.jpg");
+}
+/*
+.player1{
+    -fx-image: url("/images/Player1.png");
+    -fx-smooth: true;
+}
+*/

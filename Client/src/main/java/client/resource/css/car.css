@@ -1,0 +1,4 @@
+#car{
+    -fx-background-image: url("images/Player1.png");
+    -fx-smooth: true;
+}
