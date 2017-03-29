@@ -1,8 +1,12 @@
 package server.GUI;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import server.DataBase;
 import server.GameServer;
 
 import java.io.IOException;
@@ -12,19 +16,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Controller {
-
     Logger logger = Logger.getLogger(this.getClass().getName());
 
+    public TextField userID;
+
     public ListView<String> serverView;
+    public ListView<String> usersView;
+
     GameServer gameServer;
+    DataBase dataBase;
 
     Integer countPlayers = 0;
-
 
     public synchronized void startServer(ActionEvent actionEvent) {
         gameServer = new GameServer(serverView);
@@ -37,26 +47,24 @@ public class Controller {
     }
 
     public void connectToDB(ActionEvent actionEvent) {
+        dataBase = DataBase.getInstance();
+        dataBase.setServerView(serverView);
+        dataBase.printInfo();
+    }
 
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            serverView.getItems().add("\nDriver has been found");
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Connection connection = null;
-                    try {
-                        Locale.setDefault(Locale.ENGLISH);
-                        connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "root");
-                        serverView.getItems().add("Connection has been created\n");
-                        //Statement statement = connection.createStatement();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (ClassNotFoundException e) {
-            logger.log(Level.INFO, "Can't find ORACLE driver");
+    public void findUser(ActionEvent actionEvent) {
+        String userID = this.userID.getText();
+        if (userID != null && !"".equals(userID)) {
+            HashMap<String, Integer> users = dataBase.findUserStatistic(userID);
+            Iterator it = users.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                usersView.getItems().add("User " + pair.getKey() + " has score: " + pair.getValue());
+                it.remove();
+            }
+        }
+        else{
+            usersView.getItems().add("Incorrect user id");
         }
     }
 }

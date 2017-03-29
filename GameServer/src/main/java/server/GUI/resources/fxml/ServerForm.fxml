@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.GUI.Controller">
@@ -14,7 +16,11 @@
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
             <Button mnemonicParsing="false" onAction="#startServer" text="Start Server" />
-            <Button layoutY="25.0" mnemonicParsing="false" text="Connect to DataBase" onAction="#connectToDB" />
+            <Button layoutY="25.0" mnemonicParsing="false" onAction="#connectToDB" text="Connect to DataBase" />
+            <TextField fx:id="userID" layoutX="64.0" layoutY="65.0" />
+            <Label layoutY="69.0" text="Find user:" />
+            <Button layoutX="220.0" layoutY="65.0" mnemonicParsing="false" onAction="#findUser" text="Find user" />
+            <ListView fx:id="usersView" layoutX="7.0" layoutY="90.0" prefHeight="104.0" prefWidth="313.0" />
          </children></AnchorPane>
   </items>
 </SplitPane>
