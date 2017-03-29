@@ -6,6 +6,8 @@ package client;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+
+import java.util.Random;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import java.io.*;
@@ -26,10 +28,10 @@ public class Player extends Thread {
 
     String []images = new String[12];
 
-    File file = new File(getClass().getResource("/music/NFS.wav").getFile()); //new File("C:\\Users\\DDD\\Documents\\GitHub\\BlackRaceFX\\src\\resource\\Music\\NFS.wav");
-    Sound music = new Sound(file);
+  //   File file = new File(getClass().getResource("/music/NFS.wav").getFile()); //new File("C:\\Users\\DDD\\Documents\\GitHub\\BlackRaceFX\\src\\resource\\Music\\NFS.wav");
+  //  Sound music = new Sound(file);
 
-    public Player(ImageView car, String playerName, Pane pane2, Pane pane3, Pane mainPane,int num){
+    public Player(ImageView car,String playerName, Pane pane2, Pane pane3, Pane mainPane,int num){
         this.car = car;
         this.playerName = playerName;
         this.speed = 25;
@@ -67,15 +69,11 @@ public class Player extends Thread {
         //--------------------------------------------
 
         //TODO add Client Number
-        if(PlayerNum == clientNumber)
-        {
-            music.play();
-            while (true) {
-                distance += speed / 10;
-                if (speed > 35)
-                    speed = 35;
-                else if (speed < 15)
-                    speed = 15;
+
+        while (true) {
+            if (PlayerNum == clientNumber){
+                //   music.play();
+                    distance += speed / 10;
 
                 //Движение трассы--------------------------
                 pane2.setLayoutY(pane2.getLayoutY() + speed);
@@ -127,8 +125,14 @@ public class Player extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
             }
+
         }
+
+
+
+
     }
 
 

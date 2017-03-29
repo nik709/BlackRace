@@ -8,10 +8,21 @@
 <children>
     <Pane fx:id="pain2" prefHeight="800" prefWidth="800" layoutY="0" styleClass="fon"/>
     <Pane fx:id="pain3" prefHeight="800" prefWidth="800" layoutY="-600" styleClass="fon"/>
-    <Button layoutX="800" layoutY="0" onAction="#begin" text="Start" />
-    <ImageView fx:id="testCar" fitHeight="102" fitWidth="48" layoutY="480.0" styleClass="player1"/>
-    <ImageView fx:id="testCar2" fitHeight="102" fitWidth="48" layoutY="480.0" styleClass="player1"/>
-    <ImageView fx:id="testCar3" fitHeight="102" fitWidth="48" layoutY="480.0" styleClass="player1"/>
-    <ImageView fx:id="testCar4" fitHeight="102" fitWidth="48" layoutY="480.0" styleClass="player1"/>
+
+    <Button layoutX="800" onAction="#begin" text="Start" />
+
+    <ImageView fx:id="testCar" fitHeight="102" fitWidth="48" layoutY="480.0"/>
+    <ImageView fx:id="testCar2" fitHeight="102" fitWidth="48" layoutY="480.0"/>
+    <ImageView fx:id="testCar3" fitHeight="102" fitWidth="48" layoutY="480.0"/>
+    <ImageView fx:id="testCar4" fitHeight="102" fitWidth="48" layoutY="480.0" />
+
+    <ImageView fx:id="police1" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police2" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police3" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police4" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police5" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police6" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police7" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
+    <ImageView fx:id="police8" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
 </children>
 </Pane>
