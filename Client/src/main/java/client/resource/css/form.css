@@ -9,9 +9,8 @@
     -fx-image: url("/images/trace.jpg");
     -fx-background-image: url("/images/trace.jpg");
 }
-/*
-.player1{
-    -fx-image: url("/images/Player1.png");
-    -fx-smooth: true;
+
+.police{
+    -fx-image: url("/images/barrier.png");
+    -fx-background-image: url("/images/barrier.png");
 }
-*/
