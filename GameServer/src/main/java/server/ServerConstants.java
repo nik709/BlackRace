@@ -21,4 +21,6 @@ public interface ServerConstants {
     String SUCCESSFULL_CONNECTION_TO_DB = String.valueOf("Connection to database COMPLETED");
     String FAILED_CONNECTION_TO_DB = String.valueOf("Connection to database FAILED");
 
+
+
 }

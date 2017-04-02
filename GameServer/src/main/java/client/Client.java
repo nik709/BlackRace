@@ -43,12 +43,16 @@ public class Client {
             responce.append("\r\n");
 
             DataOutputStream os = new DataOutputStream(clientSocket.getOutputStream());
-            DataInputStream is = new DataInputStream(clientSocket.getInputStream());
+
 
             os.writeUTF(responce.toString());
             os.flush();
 
-            System.out.print(is.readUTF());
+            while (true) {
+                DataInputStream is = new DataInputStream(clientSocket.getInputStream());
+                if (is != null)
+                    System.out.print(is.readUTF());
+            }
 
         } catch (IOException ex){
             logger.log(Level.INFO, "Can't connect to " + ServerConstants.SERVER_ADDRESS);
