@@ -21,6 +21,8 @@
             <Label layoutY="69.0" text="Find user:" />
             <Button layoutX="220.0" layoutY="65.0" mnemonicParsing="false" onAction="#findUser" text="Find user" />
             <ListView fx:id="usersView" layoutX="7.0" layoutY="90.0" prefHeight="104.0" prefWidth="313.0" />
+            <TextField fx:id="message" layoutX="449.0" layoutY="2.0" />
+            <Button onAction="#sendMessage" layoutX="425.0" layoutY="27.0" mnemonicParsing="false" text="Send the message to all users" />
          </children></AnchorPane>
   </items>
 </SplitPane>

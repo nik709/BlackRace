@@ -29,12 +29,11 @@ public class DataBase {
             try {
                 Locale.setDefault(Locale.ENGLISH);
                 connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "root");
-                //Statement statement = connection.createStatement();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } catch (ClassNotFoundException e) {
-
+            serverView.getItems().add("Can't find driver");
         }
     }
 

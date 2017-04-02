@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import server.DataBase;
 import server.GameServer;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -16,18 +17,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Controller {
+
     Logger logger = Logger.getLogger(this.getClass().getName());
 
     public TextField userID;
-
+    public TextField message;
     public ListView<String> serverView;
     public ListView<String> usersView;
 
@@ -66,5 +65,25 @@ public class Controller {
         else{
             usersView.getItems().add("Incorrect user id");
         }
+    }
+
+    public void sendMessage(ActionEvent actionEvent) {
+        String message = this.message.getText();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                List<Socket> clients = gameServer.getClients();
+                for (Socket client: clients) {
+                    DataOutputStream response = null;
+                    try {
+                        response = new DataOutputStream(client.getOutputStream());
+                        response.writeUTF(message);
+                        response.flush();
+                    } catch (IOException e) {
+                        serverView.getItems().add("Can't send the message");
+                    }
+                }
+            }
+        });
     }
 }
