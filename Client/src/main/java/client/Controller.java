@@ -1,5 +1,6 @@
 package client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -21,7 +22,7 @@ public class Controller {
     public ImageView police5,police6;
     public ImageView police7,police8;
 
-    public int PlayersCount = 4;
+    public int PlayersCount = 1;
 
     Player[]player = new Player[PlayersCount];
     String []PlayersNames = new String[PlayersCount];
@@ -39,23 +40,11 @@ public class Controller {
         images[3]=testCar4;
 
         for(int i=0; i<PlayersCount; i++) {
-            player[i] = new Player(images[i], PlayersNames[i], pain2, pain3, mainPane, i);
+            player[i] = new Player(images[i],police1,police2,police3,police4,police5,police6,police7,police8,
+                                   PlayersNames[i], pain2, pain3, mainPane,PlayersCount, i);
             player[i].start();
         }
 
-
-        Barrier barrier = new Barrier(police1,police2,0);
-        barrier.start();
-/*
-        Barrier barrier2 = new Barrier(police3,police4,1);
-        barrier2.start();
-
-        Barrier barrier3 = new Barrier(police5,police6,2);
-        barrier3.start();
-
-        Barrier barrier4 = new Barrier(police7,police8,3);
-        barrier4.start();
-*/
     }
 
 }
