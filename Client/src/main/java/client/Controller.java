@@ -44,7 +44,5 @@ public class Controller {
                                    PlayersNames[i], pain2, pain3, mainPane,PlayersCount, i);
             player[i].start();
         }
-
     }
-
 }

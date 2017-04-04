@@ -69,6 +69,12 @@ public class Controller {
 
     public void sendMessage(ActionEvent actionEvent) {
         String message = this.message.getText();
+        String ls = System.getProperty("line.separator");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(message);
+        builder.append(ls);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

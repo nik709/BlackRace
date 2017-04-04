@@ -33,7 +33,7 @@ public class DataBase {
                 e.printStackTrace();
             }
         } catch (ClassNotFoundException e) {
-            serverView.getItems().add("Can't find driver");
+            logger.log(Level.INFO, "Can't find driver");
         }
     }
 

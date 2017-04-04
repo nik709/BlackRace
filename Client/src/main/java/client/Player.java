@@ -4,10 +4,13 @@
 
 package client;
 
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.net.Socket;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import java.io.*;
@@ -36,6 +39,8 @@ public class Player extends Thread {
     private final ImageView enemy7;
     private final ImageView enemy8;
 
+    Socket socket;
+
     int enemy_speed = 15;
     String []images = new String[12];
 
@@ -63,10 +68,7 @@ public class Player extends Thread {
         this.mainPane = mainPane;
         this.PlayerNum=num;
         this.playersCount=playersCount;
-    }
 
-    @Override
-    public void run() {
         images[0] = "-fx-image: url(\"/images/Player1.png\");";
         images[1] = "-fx-image: url(\"/images/Player1_Left.png\");";
         images[2] = "-fx-image: url(\"/images/Player1_Right.png\");";
@@ -125,6 +127,25 @@ public class Player extends Thread {
         MAX_LEFT = (int) car.getLayoutX();
         //--------------------------------------------
 
+        try {
+            socket = new Socket(ClientConstants.SERVER_ADDRESS, ClientConstants.PORT_NUMBER);
+            logger.log(Level.INFO, "Connection was successful");
+
+            DataOutputStream os = new DataOutputStream(socket.getOutputStream());
+            String message = String.valueOf("PLAYER");
+            os.writeUTF(message);
+            os.flush();
+
+            Messager messager = new Messager(socket);
+            messager.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
         //TODO add Client Number
         while (true) {
             if (PlayerNum == clientNumber){
@@ -198,7 +219,7 @@ public class Player extends Thread {
                     }
 
                     if (event.getCode() == KeyCode.ESCAPE) {
-                        this.stop();
+                        //this.stop();
                         System.exit(0);
                     }
                 });
@@ -230,7 +251,6 @@ public class Player extends Thread {
 
 
     }
-
 
     public String getPlayerName() {
         return playerName;
