@@ -37,20 +37,8 @@ public class Worker extends Thread {
         DataInputStream clientInfo = null;
         DataOutputStream response = null;
 
-        try {
-            clientInfo = new DataInputStream(clientSocket.getInputStream());
-            listView.getItems().add(clientInfo.readUTF());
-        } catch (IOException e) {
-            listView.getItems().add(ServerConstants.FAIL_CONNECTED_MESSAGE);
-        }
-
-        try {
-            response = new DataOutputStream(clientSocket.getOutputStream());
-            response.writeUTF("\nHello from server\n");
-            response.flush();
-        } catch (IOException e) {
-            listView.getItems().add(ServerConstants.FAIL_CONNECTED_MESSAGE);
-        }
+        Messager messager = new Messager(clientSocket);
+        messager.start();
     }
 
     public void execute(){

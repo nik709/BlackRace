@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +23,8 @@ public class GameServer extends Thread {
     private ListView<String> serverView;
 
     private Integer clientQuantity;
+
+    private ArrayList<Socket> clients = new ArrayList<Socket>();
 
     private Worker worker;
 
@@ -39,8 +42,10 @@ public class GameServer extends Thread {
             while (true){
                 try {
                     Socket clientSocket = serverSocket.accept();
-                    if (clientSocket != null)
+                    if (clientSocket != null) {
                         clientQuantity++;
+                        clients.add(clientSocket);
+                    }
 
                     worker = new Worker(clientSocket, serverView, clientQuantity);
                     worker.execute();
@@ -59,7 +64,7 @@ public class GameServer extends Thread {
         startServer();
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
+    public ArrayList<Socket> getClients() {
+        return clients;
     }
 }
