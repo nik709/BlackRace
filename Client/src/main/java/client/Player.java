@@ -25,7 +25,7 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 1;
+    private int clientNumber = 0;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -37,7 +37,7 @@ public class Player extends Thread {
     private final ImageView enemy7;
     private final ImageView enemy8;
 
-    Socket socket;
+    private Socket socket;
 
     boolean alive = true;
 
@@ -148,8 +148,8 @@ public class Player extends Thread {
             os.writeUTF(message);
             os.flush();
 
-            OutputMessager outputMessager = new OutputMessager(socket);
-            outputMessager.start();
+            InputMessager inputMessager = new InputMessager(socket);
+            inputMessager.start();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -252,6 +252,14 @@ public class Player extends Thread {
 
                 });
                 //-------------------------------------------
+                StringBuilder sb = new StringBuilder();
+                sb.append(car.getLayoutX());
+                sb.append("\r\n");
+                OutputMessager outputMessager = new OutputMessager(socket, sb.toString());
+                outputMessager.start();
+
+                InputMessager inputMessager = new InputMessager(socket);
+                inputMessager.start();
                 try {
                     Thread.sleep(40);
                 } catch (InterruptedException e) {

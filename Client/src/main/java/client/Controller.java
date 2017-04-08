@@ -22,7 +22,7 @@ public class Controller {
     public ImageView police5,police6;
     public ImageView police7,police8;
 
-    public int PlayersCount = 4;
+    public int PlayersCount = 1;
 
     Player[]player = new Player[PlayersCount];
     String []PlayersNames = new String[PlayersCount];
@@ -34,6 +34,7 @@ public class Controller {
             PlayersNames[i] = "Player" + i;
 
         }
+
         images[0]=testCar;
         images[1]=testCar2;
         images[2]=testCar3;

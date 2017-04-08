@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Никита on 02.04.2017.
@@ -23,7 +25,8 @@ public class InputMessager extends Thread {
             try {
                 DataInputStream is = new DataInputStream(clientSocket.getInputStream());
                 if (is != null) {
-                    System.out.print(is.readUTF());
+                    Logger log = Logger.getLogger(this.getClass().getName());
+                    log.log(Level.INFO, "Current X: " + is.readUTF());
                 }
 
             } catch (IOException e) {

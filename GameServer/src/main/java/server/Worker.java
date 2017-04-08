@@ -3,8 +3,7 @@ package server;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
 
@@ -37,6 +36,9 @@ public class Worker extends Thread {
 
         InputMessager inputMessager = new InputMessager(clientSocket);
         inputMessager.start();
+
+        OutputMessager outputMessager = new OutputMessager(clientSocket, new Integer(clientNumber-1).toString());
+        outputMessager.start();
     }
 
     public void execute(){

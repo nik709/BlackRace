@@ -1,38 +1,40 @@
 package client;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Created by Никита on 02.04.2017.
+ * Created by Никита on 08.04.2017.
  */
 public class OutputMessager extends Thread {
 
     private Socket socket;
 
-    public OutputMessager(Socket socket){
+    private String message;
+
+    public OutputMessager(Socket socket, String message){
         this.socket = socket;
+        this.message = message;
     }
 
     @Override
-    public void run() {
-
-        while (true) {
+    public void run(){
+        while(true) {
             try {
-                DataInputStream is = new DataInputStream(socket.getInputStream());
-                if (is != null) {
-                    System.out.print(is.readUTF());
-                }
-
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
-                String message = String.valueOf("Hello! I'm player " + 1);
-                os.writeUTF(message);
+
+                StringBuilder sb = new StringBuilder(message);
+                sb.append("\r\n");
+
+                os.writeUTF(sb.toString());
                 os.flush();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger log = Logger.getLogger(this.getClass().getName());
+                log.log(Level.INFO, "Socket for output has been closed");
             }
         }
     }
