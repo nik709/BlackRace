@@ -8,11 +8,11 @@ import java.net.Socket;
 /**
  * Created by Никита on 02.04.2017.
  */
-public class Messager extends Thread {
+public class OutputMessager extends Thread {
 
     private Socket socket;
 
-    public Messager(Socket socket){
+    public OutputMessager(Socket socket){
         this.socket = socket;
     }
 

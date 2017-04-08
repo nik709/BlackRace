@@ -5,9 +5,7 @@ import javafx.scene.control.ListView;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -37,8 +35,8 @@ public class Worker extends Thread {
         DataInputStream clientInfo = null;
         DataOutputStream response = null;
 
-        Messager messager = new Messager(clientSocket);
-        messager.start();
+        InputMessager inputMessager = new InputMessager(clientSocket);
+        inputMessager.start();
     }
 
     public void execute(){

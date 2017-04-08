@@ -4,12 +4,10 @@
 
 package client;
 
-import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.net.Socket;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
@@ -136,8 +134,8 @@ public class Player extends Thread {
             os.writeUTF(message);
             os.flush();
 
-            Messager messager = new Messager(socket);
-            messager.start();
+            OutputMessager outputMessager = new OutputMessager(socket);
+            outputMessager.start();
 
         } catch (IOException e) {
             e.printStackTrace();
