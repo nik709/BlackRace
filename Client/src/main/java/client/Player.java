@@ -25,7 +25,7 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 0;
+    private int clientNumber = 1;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -39,11 +39,11 @@ public class Player extends Thread {
 
     Socket socket;
 
-    int enemy_speed = 15;
-    String []images = new String[12];
+    boolean alive = true;
 
-  //   File file = new File(getClass().getResource("/music/NFS.wav").getFile()); //new File("C:\\Users\\DDD\\Documents\\GitHub\\BlackRaceFX\\src\\resource\\Music\\NFS.wav");
-  //  Sound music = new Sound(file);
+    int enemy_speed = 15;
+    String []images = new String[16];
+    ImageView []enemies = new ImageView[8];
 
     public Player(ImageView car,ImageView police1,ImageView police2,ImageView police3,ImageView police4,
                   ImageView police5,ImageView police6,ImageView police7,ImageView police8,
@@ -83,6 +83,11 @@ public class Player extends Thread {
         images[10] = "-fx-image: url(\"/images/Player4_Left.png\");";
         images[11] = "-fx-image: url(\"/images/Player4_Right.png\");";
 
+        images[12] = "-fx-image: url(\"/images/Player1_Broken.png\");";
+        images[13] = "-fx-image: url(\"/images/Player2_Broken.png\");";
+        images[14] = "-fx-image: url(\"/images/Player3_Broken.png\");";
+        images[15] = "-fx-image: url(\"/images/Player4_Broken.png\");";
+
         car.setStyle(images[PlayerNum * 3]);
         car.setLayoutX(70 + PlayerNum * 175 + PlayerNum * 3);
 
@@ -100,25 +105,34 @@ public class Player extends Thread {
         int rightLane4 = 694;
 
         //--------------------Начальное положение-------------
-        enemy1.setLayoutX(leftLane1);
-        enemy1.setLayoutY(-150);
-        enemy2.setLayoutX(rightLane1);
-        enemy2.setLayoutY(-300);
+        enemies[0] = enemy1;
+        enemies[1] = enemy2;
+        enemies[2] = enemy3;
+        enemies[3] = enemy4;
+        enemies[4] = enemy5;
+        enemies[5] = enemy6;
+        enemies[6] = enemy7;
+        enemies[7] = enemy8;
 
-        enemy3.setLayoutX(leftLane2);
-        enemy3.setLayoutY(-150);
-        enemy4.setLayoutX(rightLane2);
-        enemy4.setLayoutY(-300);
+        enemies[0].setLayoutX(leftLane1);
+        enemies[0].setLayoutY(-150);
+        enemies[1].setLayoutX(rightLane1);
+        enemies[1].setLayoutY(-300);
 
-        enemy5.setLayoutX(leftLane3);
-        enemy5.setLayoutY(-150);
-        enemy6.setLayoutX(rightLane3);
-        enemy6.setLayoutY(-300);
+        enemies[2].setLayoutX(leftLane2);
+        enemies[2].setLayoutY(-150);
+        enemies[3].setLayoutX(rightLane2);
+        enemies[3].setLayoutY(-300);
 
-        enemy7.setLayoutX(leftLane4);
-        enemy7.setLayoutY(-150);
-        enemy8.setLayoutX(rightLane4);
-        enemy8.setLayoutY(-300);
+        enemies[4].setLayoutX(leftLane3);
+        enemies[4].setLayoutY(-150);
+        enemies[5].setLayoutX(rightLane3);
+        enemies[5].setLayoutY(-300);
+
+        enemies[6].setLayoutX(leftLane4);
+        enemies[6].setLayoutY(-150);
+        enemies[7].setLayoutX(rightLane4);
+        enemies[7].setLayoutY(-300);
 
         //Максимальное смещение игрока в стороны------
         MAX_RIGHT = (int) car.getLayoutX() + 90;
@@ -147,8 +161,16 @@ public class Player extends Thread {
         //TODO add Client Number
         while (true) {
             if (PlayerNum == clientNumber){
-                //--------------Движение препятствий-----------------
+                if ( ((car.getLayoutY() == enemies[PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum].getLayoutX())) ||
+                        ((car.getLayoutY() == enemies[PlayerNum+1].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum+1].getLayoutX())) ){
+                    alive = false;
+                    car.setStyle(images[12+PlayerNum]);
+                    car.setLayoutX((PlayerNum<2)? 0 : 755);
+                    car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
+                    car.setFitHeight(130);
+                }
 
+                //--------------Движение препятствий-----------------
                 enemy1.setLayoutY(enemy1.getLayoutY() + enemy_speed);
                 enemy2.setLayoutY(enemy2.getLayoutY() + enemy_speed);
                 if (enemy1.getLayoutY() > 600)
@@ -197,17 +219,16 @@ public class Player extends Thread {
                     pane3.setLayoutY(-600);
                 //-----------------------------------------
 
-
                 //Обработчик нажатия на клавиши------------
                 mainPane.setOnKeyPressed((event) -> {
-                    if (event.getCode() == KeyCode.LEFT) {
+                    if (event.getCode() == KeyCode.LEFT && alive) {
                         while (car.getLayoutX() > MAX_LEFT) {
                             car.setLayoutX(car.getLayoutX() - 15);
                             car.setStyle(images[PlayerNum * 3 + 1]);
                             car.setFitHeight(104);
                             car.setFitWidth(57);
                         }
-                    } else if (event.getCode() == KeyCode.RIGHT) {
+                    } else if (event.getCode() == KeyCode.RIGHT && alive) {
                         while (car.getLayoutX() < MAX_RIGHT) {
                             car.setLayoutX(car.getLayoutX() + 15);
                             car.setStyle(images[PlayerNum * 3 + 2]);
@@ -223,7 +244,7 @@ public class Player extends Thread {
                 });
 
                 mainPane.setOnKeyReleased((event) -> {
-                    if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+                    if ((event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) && alive) {
                         car.setStyle(images[PlayerNum * 3]);
                         car.setFitHeight(102);
                         car.setFitWidth(48);

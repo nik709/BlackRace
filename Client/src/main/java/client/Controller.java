@@ -22,7 +22,7 @@ public class Controller {
     public ImageView police5,police6;
     public ImageView police7,police8;
 
-    public int PlayersCount = 1;
+    public int PlayersCount = 4;
 
     Player[]player = new Player[PlayersCount];
     String []PlayersNames = new String[PlayersCount];
