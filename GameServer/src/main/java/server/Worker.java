@@ -33,9 +33,6 @@ public class Worker extends Thread {
         listView.getItems().add(ServerConstants.CONNECTED_MESSAGE);
         listView.getItems().add(ServerConstants.CLIENT_NUMBER_MESSAGE + clientNumber);
 
-        DataInputStream clientInfo = null;
-        DataOutputStream response = null;
-
         Input input = new Input(clientSocket);
         input.start();
     }

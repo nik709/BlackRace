@@ -5,6 +5,7 @@
 package client;
 
 import client.messager.ClientInput;
+import client.messager.Data;
 import client.messager.Output;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -27,7 +28,7 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 0;
+    private int clientNumber = 1;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -152,9 +153,10 @@ public class Player extends Thread {
 
     @Override
     public void run() {
-        //TODO add Client Number
+
         ClientInput clientInput = new ClientInput(socket);
         clientInput.start();
+
         while (true) {
             if (PlayerNum == clientNumber){
                 if ( ((car.getLayoutY() == enemies[PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum].getLayoutX())) ||
@@ -257,7 +259,7 @@ public class Player extends Thread {
                 sb.append(car.getLayoutX());
                 sb.append("\r\n");
 
-                Output output = new Output(socket, clientNumber, car.getLayoutX(), alive);
+                Output output = new Output(socket, PlayerNum, car.getLayoutX());
                 output.send();
 
                 try {
@@ -269,17 +271,19 @@ public class Player extends Thread {
             }
             else
             {
-                //Получение координат других пользователей
+                for (int i=0; i<playersCount; i++){
+                    if (i != clientNumber)
+                        System.out.println(Data.getData(i));
+                }
+                /*
+                * TODO: получаем данные, отрисовываем в зависимости от положения игрока
+                * TODO: он скачала null-ы хуячит, потому что передача не успела пройти, добавить условие на проверку на null
+                * TODO: i - номер игрока (на данный момент играем 2 игроком, получаем у 2 координаты 1-го
+                */
             }
 
         }
 
-
-
-
     }
-
-    public String getPlayerName() {
-        return playerName;
-    }
+    
 }
