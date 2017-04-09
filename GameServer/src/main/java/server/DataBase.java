@@ -129,4 +129,55 @@ public class DataBase {
 
         return users;
     }
+
+    public void resetDataBase(){
+        try {
+            String queryForDrop = findQuery("GameServer/src/scripts/drop_table.sql");
+            Statement statementForDrop = connection.createStatement();
+            statementForDrop.execute(queryForDrop);
+            statementForDrop.close();
+
+            String queryForCreate = findQuery("GameServer/src/scripts/create_users_table.sql");
+            Statement statementForCreate = connection.createStatement();
+            statementForCreate.execute(queryForCreate);
+            statementForCreate.close();
+
+            String queryForInsertAdmin = findQuery("GameServer/src/scripts/insert_new_user.sql");
+            PreparedStatement statementForInsertAdmin= connection.prepareStatement(queryForInsertAdmin);
+            statementForInsertAdmin.setInt(1, 1000);
+            statementForInsertAdmin.setString(2, "ADMIN");
+            statementForInsertAdmin.setString(3, "black");
+            statementForInsertAdmin.setInt(4, 99999);
+            statementForInsertAdmin.execute();
+            statementForInsertAdmin.close();
+
+        } catch (IOException e) {
+            logger.log(Level.INFO, "Can't find query");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkUser(Integer id, String password){
+        boolean result = false;
+        try {
+            String query = findQuery("GameServer/src/scripts/check_user_password.sql");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                result = resultSet.getBoolean("value");
+            }
+        } catch (IOException e) {
+            logger.log(Level.INFO, "Can't find query");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

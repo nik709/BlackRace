@@ -1,3 +1,7 @@
-select 1 as security
+select
+(case
+  when user_password = ? /* user password */ then 1
+  else 0
+end) value
 from game_users
-where user_id = ? and user_password = ?;
+where user_id = ? /* user ID */

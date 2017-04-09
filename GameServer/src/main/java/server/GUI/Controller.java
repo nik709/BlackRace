@@ -92,4 +92,8 @@ public class Controller {
             }
         });
     }
+
+    public void resetDB(ActionEvent actionEvent) {
+        dataBase.resetDataBase();
+    }
 }
