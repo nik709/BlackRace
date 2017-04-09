@@ -33,14 +33,6 @@ public class Client {
             responce.append("Hi! I'm a new client.");
             responce.append("\r\n");
 
-            ClientData clientData = new ClientData(1, 1.2, 2.1);
-
-            responce.append(clientData.getData().getAttribute("Client Number"));
-            responce.append("\r\n");
-            responce.append(clientData.getData().getAttribute("X"));
-            responce.append("\r\n");
-            responce.append(clientData.getData().getAttribute("Y"));
-            responce.append("\r\n");
 
             DataOutputStream os = new DataOutputStream(clientSocket.getOutputStream());
 

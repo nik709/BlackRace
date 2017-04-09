@@ -18,10 +18,23 @@ public class ClientData {
         return data;
     }
 
-    public ClientData(Integer clientNumber, Double currentX, Double currentY){
-
+    public ClientData(Integer clientNumber, Double currentX, Boolean isAlive){
         data.setAttribute("Client Number", clientNumber.toString());
         data.setAttribute("X", currentX.toString());
-        data.setAttribute("Y", currentY.toString());
+        data.setAttribute("isAlive", isAlive.toString());
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder result = new StringBuilder();
+
+        result.append(data.getAttribute("Client Number"));
+        result.append(" ");
+        result.append(data.getAttribute("X"));
+        result.append(" ");
+        result.append(data.getAttribute("isAlive"));
+        result.append(" ");
+
+        return result.toString();
     }
 }

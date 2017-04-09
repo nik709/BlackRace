@@ -1,7 +1,9 @@
 package server;
 
+import client.ClientData;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import server.messager.Input;
 
 import java.io.*;
 import java.net.Socket;
@@ -34,11 +36,8 @@ public class Worker extends Thread {
         DataInputStream clientInfo = null;
         DataOutputStream response = null;
 
-        InputMessager inputMessager = new InputMessager(clientSocket);
-        inputMessager.start();
-
-        OutputMessager outputMessager = new OutputMessager(clientSocket, new Integer(clientNumber-1).toString());
-        outputMessager.start();
+        Input input = new Input(clientSocket);
+        input.start();
     }
 
     public void execute(){

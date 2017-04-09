@@ -4,6 +4,8 @@
 
 package client;
 
+import client.messager.ClientInput;
+import client.messager.Output;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -143,14 +145,6 @@ public class Player extends Thread {
             socket = new Socket(ClientConstants.SERVER_ADDRESS, ClientConstants.PORT_NUMBER);
             logger.log(Level.INFO, "Connection was successful");
 
-            DataOutputStream os = new DataOutputStream(socket.getOutputStream());
-            String message = String.valueOf("PLAYER");
-            os.writeUTF(message);
-            os.flush();
-
-            InputMessager inputMessager = new InputMessager(socket);
-            inputMessager.start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,6 +153,8 @@ public class Player extends Thread {
     @Override
     public void run() {
         //TODO add Client Number
+        ClientInput clientInput = new ClientInput(socket);
+        clientInput.start();
         while (true) {
             if (PlayerNum == clientNumber){
                 if ( ((car.getLayoutY() == enemies[PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum].getLayoutX())) ||
@@ -238,7 +234,12 @@ public class Player extends Thread {
                     }
 
                     if (event.getCode() == KeyCode.ESCAPE) {
-                        //this.stop();
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        this.stop();
                         System.exit(0);
                     }
                 });
@@ -255,11 +256,10 @@ public class Player extends Thread {
                 StringBuilder sb = new StringBuilder();
                 sb.append(car.getLayoutX());
                 sb.append("\r\n");
-                OutputMessager outputMessager = new OutputMessager(socket, sb.toString());
-                outputMessager.start();
 
-                InputMessager inputMessager = new InputMessager(socket);
-                inputMessager.start();
+                Output output = new Output(socket, clientNumber, car.getLayoutX(), alive);
+                output.send();
+
                 try {
                     Thread.sleep(40);
                 } catch (InterruptedException e) {
