@@ -24,7 +24,7 @@ public class GameServer extends Thread {
 
     private Integer clientQuantity;
 
-    private ArrayList<Socket> clients = new ArrayList<Socket>();
+    private static ArrayList<Socket> clients = new ArrayList<Socket>();
 
     private Worker worker;
 
@@ -64,7 +64,7 @@ public class GameServer extends Thread {
         startServer();
     }
 
-    public ArrayList<Socket> getClients() {
+    public static ArrayList<Socket> getClients() {
         return clients;
     }
 }

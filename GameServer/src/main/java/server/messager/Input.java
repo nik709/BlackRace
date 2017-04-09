@@ -1,9 +1,12 @@
 package server.messager;
 
+import server.GameServer;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,10 +33,17 @@ public class Input extends Thread {
                 if (in.available() > 0) {
                     String string = in.readUTF();
 
-                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
-                    out.writeUTF(string);
-                    out.flush();
+                    List<Socket> sockets = GameServer.getClients();
+                    for (Socket socket: sockets){
+                        DataOutputStream response = null;
+                        try {
+                            response = new DataOutputStream(socket.getOutputStream());
+                            response.writeUTF(string);
+                            response.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
             } catch (IOException e) {
