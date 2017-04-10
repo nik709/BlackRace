@@ -69,7 +69,7 @@ public class Main extends Application {
         menuBox_2.setVisible(true);
 
 
-       newGame.setOnMouseClicked((event) -> {
+        newGame.setOnMouseClicked((event) -> {
             primaryStage.setTitle("Black Race");
             primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
             primaryStage.show();
