@@ -15,15 +15,13 @@ public class Output {
 
     private Socket socket;
 
-    Integer clientNumber;
+    Integer playerNumber;
     Double X;
-    Boolean isAlive;
 
-    public Output(Socket socket, Integer clientNumber, Double X, Boolean isAlive){
+    public Output(Socket socket, Integer playerNumber, Double X){
         this.socket = socket;
-        this.clientNumber = clientNumber;
+        this.playerNumber = playerNumber;
         this.X = X;
-        this.isAlive = isAlive;
     }
 
     public void send(){
@@ -31,11 +29,10 @@ public class Output {
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
                 StringBuilder sb = new StringBuilder();
-                sb.append(clientNumber);
+                sb.append(playerNumber);
                 sb.append("\r\n");
                 sb.append(X);
                 sb.append("\r\n");
-                sb.append(isAlive);
 
                 out.writeUTF(sb.toString());
                 out.flush();
