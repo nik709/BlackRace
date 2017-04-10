@@ -18,4 +18,9 @@ public interface ServerConstants {
 
     String STARTED_WORKER_MESSAGE = String.valueOf("Client started the worker");
 
+    String SUCCESSFULL_CONNECTION_TO_DB = String.valueOf("Connection to database COMPLETED");
+    String FAILED_CONNECTION_TO_DB = String.valueOf("Connection to database FAILED");
+
+
+
 }

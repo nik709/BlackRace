@@ -1,13 +1,12 @@
 package server;
 
+import client.ClientData;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import server.messager.Input;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -34,23 +33,8 @@ public class Worker extends Thread {
         listView.getItems().add(ServerConstants.CONNECTED_MESSAGE);
         listView.getItems().add(ServerConstants.CLIENT_NUMBER_MESSAGE + clientNumber);
 
-        DataInputStream clientInfo = null;
-        DataOutputStream response = null;
-
-        try {
-            clientInfo = new DataInputStream(clientSocket.getInputStream());
-            listView.getItems().add(clientInfo.readUTF());
-        } catch (IOException e) {
-            listView.getItems().add(ServerConstants.FAIL_CONNECTED_MESSAGE);
-        }
-
-        try {
-            response = new DataOutputStream(clientSocket.getOutputStream());
-            response.writeUTF("\nHello from server\n");
-            response.flush();
-        } catch (IOException e) {
-            listView.getItems().add(ServerConstants.FAIL_CONNECTED_MESSAGE);
-        }
+        Input input = new Input(clientSocket);
+        input.start();
     }
 
     public void execute(){
