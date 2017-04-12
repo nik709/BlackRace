@@ -45,15 +45,15 @@ public class Main extends Application {
         main_root.getChildren().add(main_img);
 
         MenuItem newGame = new MenuItem("NEW GAME");
-        MenuItem options = new MenuItem("OPTIONS");
+        MenuItem results = new MenuItem("BEST RACE");
         MenuItem exitGame = new MenuItem("EXIT");
-        SubMenu mainMenu = new SubMenu(newGame, options, exitGame);
+        SubMenu mainMenu = new SubMenu(newGame, results, exitGame);
 
         MenuItem registration = new MenuItem("JOIN NOW");
         MenuItem login = new MenuItem("LOGIN");
         SubMenu logPage = new SubMenu(registration, login);
 
-        MenuItem sound = new MenuItem("MUSIC");
+        MenuItem sound = new MenuItem("TUT BUDET REZULTAT");
         MenuItem optionsBack = new MenuItem("BACK");
         SubMenu optionsMenu = new SubMenu(sound, optionsBack);
 
@@ -69,7 +69,7 @@ public class Main extends Application {
         menuBox_2.setVisible(true);
 
 
-        newGame.setOnMouseClicked((event) -> {
+       newGame.setOnMouseClicked((event) -> {
             primaryStage.setTitle("Black Race");
             primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
             primaryStage.show();
@@ -121,8 +121,6 @@ public class Main extends Application {
         });
 
 
-
-
         login.setOnMouseClicked((event) -> {
             GridPane grid = new GridPane();
             grid.setAlignment(Pos.CENTER);
@@ -162,7 +160,7 @@ public class Main extends Application {
             primaryStage.setScene(scene2);
         });
 
-        options.setOnMouseClicked(event->menuBox_2.setSubMenu(optionsMenu));
+        results.setOnMouseClicked(event->menuBox_2.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event-> System.exit(0));
         optionsBack.setOnMouseClicked(event->menuBox_2.setSubMenu(mainMenu));
 
@@ -196,6 +194,7 @@ public class Main extends Application {
             });
         }
     }
+
     private static class MenuBox extends Pane{
         static SubMenu subMenu;
         public MenuBox(SubMenu subMenu){
