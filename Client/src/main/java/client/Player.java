@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import java.io.*;
 
+
+
 public class Player extends Thread {
     private Logger logger = Logger.getLogger("Logs");
 
@@ -28,7 +30,7 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 1;
+    private int clientNumber = 0;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -44,7 +46,7 @@ public class Player extends Thread {
 
     boolean alive = true;
 
-    int enemy_speed = 15;
+    int enemy_speed = 10;
     String []images = new String[16];
     ImageView []enemies = new ImageView[8];
 
@@ -63,7 +65,7 @@ public class Player extends Thread {
         this.enemy7 = police7;
         this.enemy8 = police8;
 
-        this.speed = 25;
+        this.speed = 20;
         this.pane2 = pane2;
         this.pane3 = pane3;
         this.mainPane = mainPane;
@@ -120,22 +122,22 @@ public class Player extends Thread {
         enemies[0].setLayoutX(leftLane1);
         enemies[0].setLayoutY(-150);
         enemies[1].setLayoutX(rightLane1);
-        enemies[1].setLayoutY(-300);
+        enemies[1].setLayoutY(-750);
 
         enemies[2].setLayoutX(leftLane2);
         enemies[2].setLayoutY(-150);
         enemies[3].setLayoutX(rightLane2);
-        enemies[3].setLayoutY(-300);
+        enemies[3].setLayoutY(-750);
 
         enemies[4].setLayoutX(leftLane3);
         enemies[4].setLayoutY(-150);
         enemies[5].setLayoutX(rightLane3);
-        enemies[5].setLayoutY(-300);
+        enemies[5].setLayoutY(-750);
 
         enemies[6].setLayoutX(leftLane4);
         enemies[6].setLayoutY(-150);
         enemies[7].setLayoutX(rightLane4);
-        enemies[7].setLayoutY(-300);
+        enemies[7].setLayoutY(-750);
 
         //Максимальное смещение игрока в стороны------
         MAX_RIGHT = (int) car.getLayoutX() + 90;
@@ -149,18 +151,24 @@ public class Player extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void run() {
+        int []left_enemy = new int[2];
+        left_enemy[0] = -150;
+        left_enemy[1] = -450;
+        int index_l = 1;
+        int index_r = 0;
 
         ClientInput clientInput = new ClientInput(socket);
         clientInput.start();
 
         while (true) {
             if (PlayerNum == clientNumber){
-                if ( ((car.getLayoutY() == enemies[PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum].getLayoutX())) ||
-                        ((car.getLayoutY() == enemies[PlayerNum+1].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum+1].getLayoutX())) ){
+                if ( ((car.getLayoutY() == enemies[2*PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[2*PlayerNum].getLayoutX())) ||
+                        ((car.getLayoutY() == enemies[2*PlayerNum+1].getLayoutY()) && (car.getLayoutX() == enemies[2*PlayerNum+1].getLayoutX())) ){
                     alive = false;
                     car.setStyle(images[12+PlayerNum]);
                     car.setLayoutX((PlayerNum<2)? 0 : 755);
@@ -168,43 +176,66 @@ public class Player extends Thread {
                     car.setFitHeight(130);
                 }
 
+
                 //--------------Движение препятствий-----------------
-                enemy1.setLayoutY(enemy1.getLayoutY() + enemy_speed);
-                enemy2.setLayoutY(enemy2.getLayoutY() + enemy_speed);
-                if (enemy1.getLayoutY() > 600)
-                    enemy1.setLayoutY(-150);
-                if (enemy2.getLayoutY() > 600)
-                    enemy2.setLayoutY(-300);
+
+
+                enemies[0].setLayoutY(enemies[0].getLayoutY() + enemy_speed);
+                enemies[1].setLayoutY(enemies[1].getLayoutY() + enemy_speed);
+
+                if (enemies[0].getLayoutY() >= 600) {
+                    enemies[0].setLayoutY(left_enemy[index_l]);
+                    index_l++;
+                    if(index_l>1)
+                        index_l=0;
+
+                }
+                if (enemies[1].getLayoutY() >= 600) {
+                    enemies[1].setLayoutY(left_enemy[index_r]);
+                    index_r++;
+                    if(index_r>1)
+                        index_r=0;
+                }
 
                 if(playersCount>1) {
-                    enemy3.setLayoutY(enemy3.getLayoutY() + enemy_speed);
-                    enemy4.setLayoutY(enemy4.getLayoutY() + enemy_speed);
-                    if (enemy3.getLayoutY() > 600)
-                        enemy3.setLayoutY(-150);
-                    if (enemy4.getLayoutY() > 600)
-                        enemy4.setLayoutY(-300);
+                    enemies[2].setLayoutY(enemies[0].getLayoutY());
+                    enemies[3].setLayoutY(enemies[1].getLayoutY());
                 }
                 if(playersCount>2) {
-                    enemy5.setLayoutY(enemy5.getLayoutY() + enemy_speed);
-                    enemy6.setLayoutY(enemy6.getLayoutY() + enemy_speed);
-                    if (enemy5.getLayoutY() > 600)
-                        enemy5.setLayoutY(-150);
-                    if (enemy6.getLayoutY() > 600)
-                        enemy6.setLayoutY(-300);
+                    enemies[4].setLayoutY(enemies[0].getLayoutY());
+                    enemies[5].setLayoutY(enemies[1].getLayoutY());
                 }
                 if(playersCount>3) {
-                    enemy7.setLayoutY(enemy7.getLayoutY() + enemy_speed);
-                    enemy8.setLayoutY(enemy8.getLayoutY() + enemy_speed);
-                    if (enemy7.getLayoutY() > 600)
-                        enemy7.setLayoutY(-150);
-                    if (enemy8.getLayoutY() > 600)
-                        enemy8.setLayoutY(-300);
+                    enemies[6].setLayoutY(enemies[0].getLayoutY());
+                    enemies[7].setLayoutY(enemies[1].getLayoutY());
+
                 }
                 //--------------Движение препятствий-----------------
 
 
-                //   music.play();
-                distance += speed / 10;
+                //Пройденаня дистанция
+                if(alive)
+                    distance += 1;
+
+                if(distance==1300){
+                    speed =40;
+                    enemy_speed = 30;
+                }
+                else
+                    if(distance==800){
+                        speed = 35;
+                        enemy_speed = 25;
+                    }
+                    else
+                        if(distance==450) {
+                            speed = 30;
+                            enemy_speed = 20;
+                        }
+                        else
+                            if(distance==150) {
+                                speed = 25;
+                                enemy_speed = 15;
+                            }
 
                 //Движение трассы--------------------------
                 pane2.setLayoutY(pane2.getLayoutY() + speed);
@@ -271,15 +302,17 @@ public class Player extends Thread {
             }
             else
             {
-                for (int i=0; i<playersCount; i++){
-                    if (i != clientNumber)
-                        System.out.println(Data.getData(i));
+                if(Data.getData(PlayerNum)!=null){
+                    if(Double.parseDouble(Data.getData(PlayerNum))==0 || Double.parseDouble(Data.getData(PlayerNum))==755) {
+                        car.setStyle(images[12+PlayerNum]);
+                        car.setFitHeight(130);
+                        car.setLayoutX(Double.parseDouble(Data.getData(PlayerNum)));
+                        car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
+                    }
+                    else
+                        car.setLayoutX(Double.parseDouble(Data.getData(PlayerNum)));
                 }
-                /*
-                * TODO: получаем данные, отрисовываем в зависимости от положения игрока
-                * TODO: он скачала null-ы хуячит, потому что передача не успела пройти, добавить условие на проверку на null
-                * TODO: i - номер игрока (на данный момент играем 2 игроком, получаем у 2 координаты 1-го)
-                */
+
             }
 
         }

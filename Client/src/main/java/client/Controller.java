@@ -1,6 +1,5 @@
 package client;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -11,7 +10,6 @@ public class Controller {
     public Pane pain2;
     public Pane pain3;
     public Pane mainPane;
-
     public ImageView testCar;
     public ImageView testCar2;
     public ImageView testCar3;
