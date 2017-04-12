@@ -1,5 +1,6 @@
 package client.messager;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +9,10 @@ import java.util.List;
  * Created by Никита on 09.04.2017.
  */
 public class Data {
+
+    private static String login;
+
+    private static Socket socket;
 
     private static List<String> data = new ArrayList<>();
 
@@ -26,5 +31,21 @@ public class Data {
             return null;
 
         return data.get(index);
+    }
+
+    public static String getLogin() {
+        return login;
+    }
+
+    public static void setLogin(String login) {
+        Data.login = login;
+    }
+
+    public static Socket getSocket() {
+        return socket;
+    }
+
+    public static void setSocket(Socket socket) {
+        Data.socket = socket;
     }
 }

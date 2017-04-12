@@ -33,6 +33,8 @@ public class Player extends Thread {
     private int clientNumber = 0;
     private int playersCount = 0;
 
+    private boolean isScoreSended = false;
+
     private final ImageView enemy1;
     private final ImageView enemy2;
     private final ImageView enemy3;
@@ -144,13 +146,7 @@ public class Player extends Thread {
         MAX_LEFT = (int) car.getLayoutX();
         //--------------------------------------------
 
-        try {
-            socket = new Socket(ClientConstants.SERVER_ADDRESS, ClientConstants.PORT_NUMBER);
-            logger.log(Level.INFO, "Connection was successful");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        socket = Data.getSocket();
 
     }
 
@@ -286,9 +282,7 @@ public class Player extends Thread {
 
                 });
                 //-------------------------------------------
-                StringBuilder sb = new StringBuilder();
-                sb.append(car.getLayoutX());
-                sb.append("\r\n");
+
 
                 Output output = new Output(socket, PlayerNum, car.getLayoutX());
                 output.send();

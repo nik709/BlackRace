@@ -1,5 +1,6 @@
 package client;
 
+import client.messager.Data;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -26,9 +27,24 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Level;
+
 public class Main extends Application {
+
+    private Socket socket;
+
     @Override
     public void start(Stage primaryStage)throws Exception {
+
+        try {
+            socket = new Socket(ClientConstants.SERVER_ADDRESS, ClientConstants.PORT_NUMBER);
+            Data.setSocket(socket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Pane root = new Pane();
         Pane main_root = new Pane();
         String fxmlFile = "/fxml/ClientForm.fxml";
@@ -53,9 +69,9 @@ public class Main extends Application {
         MenuItem login = new MenuItem("LOGIN");
         SubMenu logPage = new SubMenu(registration, login);
 
-        MenuItem sound = new MenuItem("TUT BUDET REZULTAT");
+        MenuItem score = new MenuItem("YOUR BEST RESULT: ");
         MenuItem optionsBack = new MenuItem("BACK");
-        SubMenu optionsMenu = new SubMenu(sound, optionsBack);
+        SubMenu optionsMenu = new SubMenu(score, optionsBack);
 
         MenuBox menuBox_1 = new MenuBox(logPage);
         root.getChildren().add(menuBox_1);
@@ -107,7 +123,9 @@ public class Main extends Application {
             Button button = new Button("Join");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1 -> {
+                RegistrationListener.registration(socket, userTextField.getText(), pwBox.getText(), pwBox2.getText());
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");
@@ -147,7 +165,11 @@ public class Main extends Application {
             Button button = new Button("Sign in");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1->{
+                LogInListener.checkUser(socket, userTextField.getText(), pwBox.getText());
+                Data.setLogin(userTextField.getText());
+                primaryStage.setScene(main_scene);
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");
