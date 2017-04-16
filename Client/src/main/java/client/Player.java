@@ -1,5 +1,5 @@
 /**
- * Created by ÐÐ¸ÐºÐ¸Ñ‚Ð° & Ð’Ð°Ð³Ð¸Ðº
+ * Created by Íèêèòà & Âàãèê
  */
 
 package client;
@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import java.io.*;
 
-
-
 public class Player extends Thread {
     private Logger logger = Logger.getLogger("Logs");
 
@@ -33,8 +31,6 @@ public class Player extends Thread {
     private int clientNumber = 0;
     private int playersCount = 0;
 
-    private boolean isScoreSended = false;
-
     private final ImageView enemy1;
     private final ImageView enemy2;
     private final ImageView enemy3;
@@ -48,7 +44,7 @@ public class Player extends Thread {
 
     boolean alive = true;
 
-    int enemy_speed = 10;
+    int enemy_speed = 15;
     String []images = new String[16];
     ImageView []enemies = new ImageView[8];
 
@@ -67,7 +63,7 @@ public class Player extends Thread {
         this.enemy7 = police7;
         this.enemy8 = police8;
 
-        this.speed = 20;
+        this.speed = 25;
         this.pane2 = pane2;
         this.pane3 = pane3;
         this.mainPane = mainPane;
@@ -111,7 +107,7 @@ public class Player extends Thread {
         int leftLane4 = 604;
         int rightLane4 = 694;
 
-        //--------------------ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ-------------
+        //--------------------Íà÷àëüíîå ïîëîæåíèå-------------
         enemies[0] = enemy1;
         enemies[1] = enemy2;
         enemies[2] = enemy3;
@@ -124,30 +120,35 @@ public class Player extends Thread {
         enemies[0].setLayoutX(leftLane1);
         enemies[0].setLayoutY(-150);
         enemies[1].setLayoutX(rightLane1);
-        enemies[1].setLayoutY(-750);
+        enemies[1].setLayoutY(-300);
 
         enemies[2].setLayoutX(leftLane2);
         enemies[2].setLayoutY(-150);
         enemies[3].setLayoutX(rightLane2);
-        enemies[3].setLayoutY(-750);
+        enemies[3].setLayoutY(-300);
 
         enemies[4].setLayoutX(leftLane3);
         enemies[4].setLayoutY(-150);
         enemies[5].setLayoutX(rightLane3);
-        enemies[5].setLayoutY(-750);
+        enemies[5].setLayoutY(-300);
 
         enemies[6].setLayoutX(leftLane4);
         enemies[6].setLayoutY(-150);
         enemies[7].setLayoutX(rightLane4);
-        enemies[7].setLayoutY(-750);
+        enemies[7].setLayoutY(-300);
 
-        //ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸Ðµ Ð¸Ð³Ñ€Ð¾ÐºÐ° Ð² ÑÑ‚Ð¾Ñ€Ð¾Ð½Ñ‹------
+        //Ìàêñèìàëüíîå ñìåùåíèå èãðîêà â ñòîðîíû------
         MAX_RIGHT = (int) car.getLayoutX() + 90;
         MAX_LEFT = (int) car.getLayoutX();
         //--------------------------------------------
 
-        socket = Data.getSocket();
+        try {
+            socket = new Socket(ClientConstants.SERVER_ADDRESS, ClientConstants.PORT_NUMBER);
+            logger.log(Level.INFO, "Connection was successful");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -172,19 +173,15 @@ public class Player extends Thread {
                     car.setFitHeight(130);
                 }
 
-
-                //--------------Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ðµ Ð¿Ñ€ÐµÐ¿ÑÑ‚ÑÑ‚Ð²Ð¸Ð¹-----------------
-
-
-                enemies[0].setLayoutY(enemies[0].getLayoutY() + enemy_speed);
-                enemies[1].setLayoutY(enemies[1].getLayoutY() + enemy_speed);
+                //--------------Äâèæåíèå ïðåïÿòñòâèé-----------------
+                enemy1.setLayoutY(enemy1.getLayoutY() + enemy_speed);
+                enemy2.setLayoutY(enemy2.getLayoutY() + enemy_speed);
 
                 if (enemies[0].getLayoutY() >= 600) {
                     enemies[0].setLayoutY(left_enemy[index_l]);
                     index_l++;
                     if(index_l>1)
                         index_l=0;
-
                 }
                 if (enemies[1].getLayoutY() >= 600) {
                     enemies[1].setLayoutY(left_enemy[index_r]);
@@ -206,10 +203,9 @@ public class Player extends Thread {
                     enemies[7].setLayoutY(enemies[1].getLayoutY());
 
                 }
-                //--------------Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ðµ Ð¿Ñ€ÐµÐ¿ÑÑ‚ÑÑ‚Ð²Ð¸Ð¹-----------------
+                //--------------Äâèæåíèå ïðåïÿòñòâèé-----------------
 
 
-                //ÐŸÑ€Ð¾Ð¹Ð´ÐµÐ½Ð°Ð½Ñ Ð´Ð¸ÑÑ‚Ð°Ð½Ñ†Ð¸Ñ
                 if(alive)
                     distance += 1;
 
@@ -233,7 +229,7 @@ public class Player extends Thread {
                                 enemy_speed = 15;
                             }
 
-                //Ð”Ð²Ð¸Ð¶ÐµÐ½Ð¸Ðµ Ñ‚Ñ€Ð°ÑÑÑ‹--------------------------
+                //Äâèæåíèå òðàññû--------------------------
                 pane2.setLayoutY(pane2.getLayoutY() + speed);
                 pane3.setLayoutY(pane3.getLayoutY() + speed);
 
@@ -244,7 +240,7 @@ public class Player extends Thread {
                     pane3.setLayoutY(-600);
                 //-----------------------------------------
 
-                //ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸Ðº Ð½Ð°Ð¶Ð°Ñ‚Ð¸Ñ Ð½Ð° ÐºÐ»Ð°Ð²Ð¸ÑˆÐ¸------------
+                //Îáðàáîò÷èê íàæàòèÿ íà êëàâèøè------------
                 mainPane.setOnKeyPressed((event) -> {
                     if (event.getCode() == KeyCode.LEFT && alive) {
                         while (car.getLayoutX() > MAX_LEFT) {
@@ -282,7 +278,9 @@ public class Player extends Thread {
 
                 });
                 //-------------------------------------------
-
+                StringBuilder sb = new StringBuilder();
+                sb.append(car.getLayoutX());
+                sb.append("\r\n");
 
                 Output output = new Output(socket, PlayerNum, car.getLayoutX());
                 output.send();
@@ -297,10 +295,10 @@ public class Player extends Thread {
             else
             {
                 if(Data.getData(PlayerNum)!=null){
-                    if(Double.parseDouble(Data.getData(PlayerNum))==0 || Double.parseDouble(Data.getData(PlayerNum))==755) {
+                    if(Double.parseDouble(Data.getData(PlayerNum))==0){
                         car.setStyle(images[12+PlayerNum]);
                         car.setFitHeight(130);
-                        car.setLayoutX(Double.parseDouble(Data.getData(PlayerNum)));
+                        car.setLayoutX(0);
                         car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
                     }
                     else

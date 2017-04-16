@@ -4,7 +4,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<?import javafx.scene.control.Label?>
 <Pane fx:id="mainPane" prefHeight="800" prefWidth="600" stylesheets="/css/form.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
 <children>
     <Pane fx:id="pain2" prefHeight="800" prefWidth="800" layoutY="0" styleClass="fon"/>
@@ -25,6 +24,5 @@
     <ImageView fx:id="police6" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
     <ImageView fx:id="police7" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
     <ImageView fx:id="police8" fitHeight="102" fitWidth="44" layoutY="-200" styleClass="police"/>
-    <Label id="score" layoutX="10" layoutY="10" text="0"/>
 </children>
 </Pane>

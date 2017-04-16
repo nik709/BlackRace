@@ -33,6 +33,8 @@ public class Controller {
     GameServer gameServer;
     DataBase dataBase;
 
+    Integer countPlayers = 0;
+
     public synchronized void startServer(ActionEvent actionEvent) {
         gameServer = new GameServer(serverView);
         Platform.runLater(new Runnable() {

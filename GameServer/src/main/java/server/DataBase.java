@@ -22,8 +22,6 @@ public class DataBase {
     private Connection connection;
     private ListView<String> serverView;
 
-    private static DataBase dataBase;
-
     private DataBase(String user, String password){
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -36,15 +34,11 @@ public class DataBase {
             }
         } catch (ClassNotFoundException e) {
             logger.log(Level.INFO, "Can't find driver");
-            e.printStackTrace();
         }
     }
 
     public static DataBase getInstance(){
-        if (dataBase == null){
-            dataBase = new DataBase("system", "root");
-        }
-        return dataBase;
+        return new DataBase("system", "root");
     }
 
     public void setServerView(ListView<String> serverView){
@@ -148,17 +142,14 @@ public class DataBase {
             statementForCreate.execute(queryForCreate);
             statementForCreate.close();
 
-            String queryForDropSeq = findQuery("GameServer/src/scripts/drop_sequence.sql");
-            Statement statementForDropSeq = connection.createStatement();
-            statementForDropSeq.execute(queryForDropSeq);
-            statementForDropSeq.close();
-
-            String queryForCreateSeq = findQuery("GameServer/src/scripts/create_sequence.sql");
-            Statement statementForCreateSeq = connection.createStatement();
-            statementForCreateSeq.execute(queryForCreateSeq);
-            statementForCreateSeq.close();
-
-            insertNewUser("ADMIN", "BLACK");
+            String queryForInsertAdmin = findQuery("GameServer/src/scripts/insert_new_user.sql");
+            PreparedStatement statementForInsertAdmin= connection.prepareStatement(queryForInsertAdmin);
+            statementForInsertAdmin.setInt(1, 1000);
+            statementForInsertAdmin.setString(2, "ADMIN");
+            statementForInsertAdmin.setString(3, "black");
+            statementForInsertAdmin.setInt(4, 99999);
+            statementForInsertAdmin.execute();
+            statementForInsertAdmin.close();
 
         } catch (IOException e) {
             logger.log(Level.INFO, "Can't find query");
@@ -167,14 +158,14 @@ public class DataBase {
         }
     }
 
-    public boolean checkUser(String name, String password){
+    public boolean checkUser(Integer id, String password){
         boolean result = false;
         try {
             String query = findQuery("GameServer/src/scripts/check_user_password.sql");
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, password);
-            preparedStatement.setString(2, name);
+            preparedStatement.setInt(2, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -188,40 +179,5 @@ public class DataBase {
         }
 
         return result;
-    }
-
-    public void insertNewUser(String userName, String password){
-        try {
-            String query = findQuery("GameServer/src/scripts/insert_new_user.sql");
-            PreparedStatement statementForInsert= connection.prepareStatement(query);
-            statementForInsert.setString(1, userName);
-            statementForInsert.setString(2, password);
-            statementForInsert.setInt(3, 0);
-            statementForInsert.execute();
-            statementForInsert.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void updateUserScore(String userName, String score){
-        String query = null;
-        try {
-            query = findQuery("GameServer/src/scripts/update_user_score.sql");
-            PreparedStatement statement = connection.prepareStatement("update game_users set user_score = ? where user_name = ?");
-            Integer intScore = Integer.valueOf(score);
-            statement.setInt(1, intScore);
-            statement.setString(2, userName);
-
-            statement.executeUpdate();
-            statement.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

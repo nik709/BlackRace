@@ -5,7 +5,7 @@ package server;
  */
 public interface ServerConstants {
 
-    Integer PORT_NUMBER = Integer.valueOf(666);
+    Integer PORT_NUMBER = Integer.valueOf(1789);
     String SERVER_ADDRESS = String.valueOf("localhost");
     String SERVER_NAME = String.valueOf("Game Server");
 
