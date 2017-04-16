@@ -142,15 +142,11 @@ public class DataBase {
             statementForCreate.execute(queryForCreate);
             statementForCreate.close();
 
-            String queryForInsertAdmin = findQuery("GameServer/src/scripts/insert_new_user.sql");
-            PreparedStatement statementForInsertAdmin= connection.prepareStatement(queryForInsertAdmin);
-            statementForInsertAdmin.setInt(1, 1000);
-            statementForInsertAdmin.setString(2, "ADMIN");
-            statementForInsertAdmin.setString(3, "black");
-            statementForInsertAdmin.setInt(4, 99999);
-            statementForInsertAdmin.execute();
-            statementForInsertAdmin.close();
+            resetSeq();
 
+            insertUser("admin".toUpperCase(), "black".toUpperCase());
+
+            serverView.getItems().add("DataBase has been reset");
         } catch (IOException e) {
             logger.log(Level.INFO, "Can't find query");
         } catch (SQLException e) {
@@ -179,5 +175,42 @@ public class DataBase {
         }
 
         return result;
+    }
+
+    public void insertUser(String userName, String password){
+        try {
+            String query = findQuery("GameServer/src/scripts/insert_new_user.sql");
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            statement.setInt(3, 0);
+
+            statement.execute();
+            statement.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetSeq(){
+        try {
+            String query = findQuery("GameServer/src/scripts/drop_sequence.sql");
+
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+            statement.close();
+
+            query = findQuery("GameServer/src/scripts/create_sequence.sql");
+            statement = connection.createStatement();
+            statement.execute(query);
+            statement.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

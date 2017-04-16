@@ -1,5 +1,6 @@
 package server.messager;
 
+import server.DataBase;
 import server.GameServer;
 
 import java.io.DataInputStream;
@@ -7,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,15 +35,33 @@ public class Input extends Thread {
                 if (in.available() > 0) {
                     String string = in.readUTF();
 
-                    List<Socket> sockets = GameServer.getClients();
-                    for (Socket socket: sockets){
-                        DataOutputStream response = null;
-                        try {
-                            response = new DataOutputStream(socket.getOutputStream());
-                            response.writeUTF(string);
-                            response.flush();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    if (string.startsWith("::")){
+
+                        StringTokenizer st = new StringTokenizer(string);
+                        String userName = "";
+                        String password = "";
+
+                        if (st.hasMoreTokens())
+                            userName = st.nextToken("::");
+                        if (st.hasMoreTokens())
+                            password = st.nextToken("::");
+
+                        DataBase db = DataBase.getInstance();
+                        db.insertUser(userName, password);
+
+                        socket.close();
+                    }
+                    else {
+                        List<Socket> sockets = GameServer.getClients();
+                        for (Socket socket : sockets) {
+                            DataOutputStream response = null;
+                            try {
+                                response = new DataOutputStream(socket.getOutputStream());
+                                response.writeUTF(string);
+                                response.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
