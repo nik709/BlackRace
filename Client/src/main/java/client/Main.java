@@ -1,5 +1,6 @@
 package client;
 
+import client.listeners.RegistrationListener;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -25,6 +26,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class Main extends Application {
     @Override
@@ -107,7 +111,10 @@ public class Main extends Application {
             Button button = new Button("Join");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1->{
+                registration(userTextField.getText(), pwBox.getText());
+                primaryStage.setScene(main_scene);
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");
@@ -169,6 +176,10 @@ public class Main extends Application {
         primaryStage.setTitle("Black Race");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void registration(String userName, String password) {
+        RegistrationListener.sendRequestForRegistrate(userName, password);
     }
 
     private static class MenuItem extends StackPane{
