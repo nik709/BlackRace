@@ -4,4 +4,4 @@ select
   else 0
 end) value
 from game_users
-where user_id = ? /* user ID */
+where user_name = ? /* user name */

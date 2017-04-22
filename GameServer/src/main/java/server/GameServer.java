@@ -33,6 +33,8 @@ public class GameServer extends Thread {
         this.clientQuantity = 0;
     }
 
+
+
     public void startServer(){
         serverSocket = null;
         try {

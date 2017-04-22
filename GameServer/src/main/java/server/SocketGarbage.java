@@ -14,15 +14,14 @@ public class SocketGarbage extends Thread {
         while(true){
             ArrayList<Socket> clients = GameServer.getClients();
             Iterator<Socket> i = clients.iterator();
-            while (i.hasNext()){
-                if (i.next().isClosed()){
+            while (i.hasNext()) {
+                if (i.next().isClosed()) {
                     i.remove();
-                    System.out.println("Socket has been removed");
                 }
             }
 
             try {
-                Thread.sleep(50);
+                Thread.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -54,18 +54,17 @@ public class DataBase {
         }
     }
 
-    public String getUserName(String userID){
-        String userName = "";
-
+    public Integer getUserScore(String userName){
+        Integer result = -1;
         try {
             String query = findQuery("GameServer/src/scripts/find_user_by_id.sql");
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, Integer.valueOf(userID));
+            preparedStatement.setString(1, userName);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                userName = resultSet.getString("user_name");
+                result = resultSet.getInt("user_score");
             }
 
             resultSet.close();
@@ -76,11 +75,7 @@ public class DataBase {
         } catch (IOException e) {
             logger.log(Level.INFO, "Can't find query");
         }
-
-        if ("".equals(userName)){
-            userName = "This user doesn't exist";
-        }
-        return userName;
+        return result;
     }
 
     private String findQuery(String fileName) throws IOException{
@@ -154,14 +149,14 @@ public class DataBase {
         }
     }
 
-    public boolean checkUser(Integer id, String password){
+    public boolean checkUser(String name, String password){
         boolean result = false;
         try {
             String query = findQuery("GameServer/src/scripts/check_user_password.sql");
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, password);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setString(2, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -207,6 +202,24 @@ public class DataBase {
             statement = connection.createStatement();
             statement.execute(query);
             statement.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUserScore(String userName, Integer score){
+        try {
+            String query = findQuery("GameServer/src/scripts/update_user_score.sql");
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, score);
+            statement.setString(2, userName);
+
+            statement.executeUpdate();
+            statement.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
