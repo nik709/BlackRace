@@ -1,6 +1,8 @@
 package client;
 
+import client.listeners.LogInListener;
 import client.listeners.RegistrationListener;
+import client.messager.Data;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -156,7 +158,16 @@ public class Main extends Application {
             Button button = new Button("Sign in");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1->{
+                boolean flag = LogInListener.checkUser(userTextField.getText(), pwBox.getText());
+                if (flag) {
+                    Data.setName(userTextField.getText());
+                    primaryStage.setScene(main_scene);
+                }
+                else {
+
+                }
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");

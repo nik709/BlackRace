@@ -4,6 +4,7 @@
 
 package client;
 
+import client.listeners.ScoreListener;
 import client.messager.ClientInput;
 import client.messager.Data;
 import client.messager.Output;
@@ -28,7 +29,8 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 0;
+
+    private int clientNumber;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -50,9 +52,10 @@ public class Player extends Thread {
 
     public Player(ImageView car,ImageView police1,ImageView police2,ImageView police3,ImageView police4,
                   ImageView police5,ImageView police6,ImageView police7,ImageView police8,
-                  String playerName, Pane pane2, Pane pane3, Pane mainPane,int playersCount,int num){
+                  String playerName, Pane pane2, Pane pane3, Pane mainPane,int playersCount,int num, int clientNumber){
         this.car = car;
         this.playerName = playerName;
+        this.clientNumber = clientNumber;
 
         this.enemy1 = police1;
         this.enemy2 = police2;
@@ -171,6 +174,8 @@ public class Player extends Thread {
                     car.setLayoutX((PlayerNum<2)? 0 : 755);
                     car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
                     car.setFitHeight(130);
+
+                    ScoreListener.sendScore(distance);
                 }
 
                 //--------------Движение препятствий-----------------

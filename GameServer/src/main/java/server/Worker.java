@@ -20,18 +20,14 @@ public class Worker extends Thread {
 
     private ListView<String> listView;
     private Socket clientSocket;
-    private Integer clientNumber;
 
     public Worker(Socket clientSocket, ListView<String> listView, Integer clientNumber){
         this.listView = listView;
         this.clientSocket = clientSocket;
-        this.clientNumber = clientNumber;
     }
 
     public void work(){
-        listView.getItems().add(ServerConstants.STARTED_WORKER_MESSAGE);
-        listView.getItems().add(ServerConstants.CONNECTED_MESSAGE);
-        listView.getItems().add(ServerConstants.CLIENT_NUMBER_MESSAGE + clientNumber);
+        //listView.getItems().add(ServerConstants.STARTED_WORKER_MESSAGE);
 
         Input input = new Input(clientSocket);
         input.start();

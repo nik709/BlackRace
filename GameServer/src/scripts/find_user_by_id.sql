@@ -1,3 +1,3 @@
-SELECT user_name
+SELECT user_score
 FROM game_users
-WHERE user_id = ?
+WHERE user_name = ?
