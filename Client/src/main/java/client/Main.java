@@ -115,7 +115,7 @@ public class Main extends Application {
             button.setPrefWidth(60);
             button.setOnMouseClicked(event1->{
                 registration(userTextField.getText(), pwBox.getText());
-                primaryStage.setScene(main_scene);
+                primaryStage.setScene(scene);
             });
             grid.add(button, 1, 4);
 
@@ -165,7 +165,7 @@ public class Main extends Application {
                     primaryStage.setScene(main_scene);
                 }
                 else {
-
+                    //TODO alert
                 }
             });
             grid.add(button, 1, 4);
