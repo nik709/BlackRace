@@ -1,5 +1,7 @@
 package client.messager;
 
+import client.exceptions.DisconnectException;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -24,7 +26,7 @@ public class Output {
         this.X = X;
     }
 
-    public void send(){
+    public void send() throws DisconnectException {
             try {
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
@@ -38,8 +40,11 @@ public class Output {
                 out.flush();
 
             } catch (IOException e) {
-                logger.log(Level.INFO, "Output of client messager: ");
-                e.printStackTrace();
+                StringBuilder sb = new StringBuilder();
+                sb.append("Something was wrong with server.");
+                sb.append("\r\n");
+                sb.append("Please, try connect later");
+                throw new DisconnectException(sb.toString());
             }
     }
 

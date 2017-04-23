@@ -4,6 +4,7 @@
 
 package client;
 
+import client.exceptions.DisconnectException;
 import client.listeners.ScoreListener;
 import client.messager.ClientInput;
 import client.messager.Data;
@@ -162,6 +163,8 @@ public class Player extends Thread {
         int index_l = 1;
         int index_r = 0;
 
+        Boolean isConnectionAvaible = true;
+
         ClientInput clientInput = new ClientInput(socket);
         clientInput.start();
 
@@ -288,7 +291,13 @@ public class Player extends Thread {
                 sb.append("\r\n");
 
                 Output output = new Output(socket, PlayerNum, car.getLayoutX());
-                output.send();
+                try {
+                    if (isConnectionAvaible)
+                        output.send();
+                } catch (DisconnectException e) {
+                    System.out.println(e.getMessage()); //TODO alert
+                    isConnectionAvaible = false;
+                }
 
                 try {
                     Thread.sleep(40);

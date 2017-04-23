@@ -17,7 +17,7 @@ public class Launcher extends Application {
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
         primaryStage.setTitle(ServerConstants.SERVER_NAME);
-        primaryStage.setScene(new Scene(root, 589, 500));
+        primaryStage.setScene(new Scene(root, 589, 400));
         primaryStage.show();
     }
 

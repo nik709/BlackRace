@@ -67,31 +67,6 @@ public class Controller {
         }
     }
 
-    public void sendMessage(ActionEvent actionEvent) {
-        String message = this.message.getText();
-        String ls = System.getProperty("line.separator");
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(message);
-        builder.append(ls);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                List<Socket> clients = gameServer.getClients();
-                for (Socket client: clients) {
-                    DataOutputStream response = null;
-                    try {
-                        response = new DataOutputStream(client.getOutputStream());
-                        response.writeUTF(message);
-                        response.flush();
-                    } catch (IOException e) {
-                        serverView.getItems().add("Can't send the message");
-                    }
-                }
-            }
-        });
-    }
 
     public void resetDB(ActionEvent actionEvent) {
         dataBase.resetDataBase();
