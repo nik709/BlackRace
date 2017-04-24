@@ -1,7 +1,8 @@
 package client.messager;
 
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ import java.util.List;
 public class Data {
 
     private static List<String> data = new ArrayList<>();
+    private static String name;
 
     synchronized public static void addData(Integer index, String s){
         if (data.isEmpty()){
@@ -26,5 +28,13 @@ public class Data {
             return null;
 
         return data.get(index);
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        Data.name = name;
     }
 }

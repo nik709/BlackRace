@@ -33,11 +33,16 @@ public class GameServer extends Thread {
         this.clientQuantity = 0;
     }
 
+
+
     public void startServer(){
         serverSocket = null;
         try {
             serverSocket = new ServerSocket(ServerConstants.PORT_NUMBER);
             serverView.getItems().add(ServerConstants.STARTED_MESSAGE + ServerConstants.PORT_NUMBER);
+
+            SocketGarbage socketGarbage = new SocketGarbage();
+            socketGarbage.start();
 
             while (true){
                 try {

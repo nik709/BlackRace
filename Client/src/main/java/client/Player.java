@@ -1,9 +1,11 @@
-﻿/**
- * Created by Никита & Вагик
+/**
+ * Created by ������ & �����
  */
 
 package client;
 
+import client.exceptions.DisconnectException;
+import client.listeners.ScoreListener;
 import client.messager.ClientInput;
 import client.messager.Data;
 import client.messager.Output;
@@ -15,6 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import java.io.*;
+
+
+import javax.swing.*;
+import java.awt.event.*;
+
 
 public class Player extends Thread {
     private Logger logger = Logger.getLogger("Logs");
@@ -28,7 +35,8 @@ public class Player extends Thread {
     private int speed;
     public int distance;
     private int PlayerNum;
-    private int clientNumber = 1;
+
+    private int clientNumber;
     private int playersCount = 0;
 
     private final ImageView enemy1;
@@ -50,9 +58,10 @@ public class Player extends Thread {
 
     public Player(ImageView car,ImageView police1,ImageView police2,ImageView police3,ImageView police4,
                   ImageView police5,ImageView police6,ImageView police7,ImageView police8,
-                  String playerName, Pane pane2, Pane pane3, Pane mainPane,int playersCount,int num){
+                  String playerName, Pane pane2, Pane pane3, Pane mainPane,int playersCount,int num, int clientNumber){
         this.car = car;
         this.playerName = playerName;
+        this.clientNumber = clientNumber;
 
         this.enemy1 = police1;
         this.enemy2 = police2;
@@ -107,7 +116,7 @@ public class Player extends Thread {
         int leftLane4 = 604;
         int rightLane4 = 694;
 
-        //--------------------Начальное положение-------------
+        //--------------------��������� ���������-------------
         enemies[0] = enemy1;
         enemies[1] = enemy2;
         enemies[2] = enemy3;
@@ -137,7 +146,7 @@ public class Player extends Thread {
         enemies[7].setLayoutX(rightLane4);
         enemies[7].setLayoutY(-300);
 
-        //Максимальное смещение игрока в стороны------
+        //������������ �������� ������ � �������------
         MAX_RIGHT = (int) car.getLayoutX() + 90;
         MAX_LEFT = (int) car.getLayoutX();
         //--------------------------------------------
@@ -153,60 +162,87 @@ public class Player extends Thread {
 
     @Override
     public void run() {
+        int []left_enemy = new int[2];
+        left_enemy[0] = -150;
+        left_enemy[1] = -450;
+        int index_l = 1;
+        int index_r = 0;
+
+        Boolean isConnectionAvaible = true;
 
         ClientInput clientInput = new ClientInput(socket);
         clientInput.start();
 
         while (true) {
             if (PlayerNum == clientNumber){
-                if ( ((car.getLayoutY() == enemies[PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum].getLayoutX())) ||
-                        ((car.getLayoutY() == enemies[PlayerNum+1].getLayoutY()) && (car.getLayoutX() == enemies[PlayerNum+1].getLayoutX())) ){
+                if ( ((car.getLayoutY() == enemies[2*PlayerNum].getLayoutY()) && (car.getLayoutX() == enemies[2*PlayerNum].getLayoutX())) ||
+                        ((car.getLayoutY() == enemies[2*PlayerNum+1].getLayoutY()) && (car.getLayoutX() == enemies[2*PlayerNum+1].getLayoutX())) ){
                     alive = false;
                     car.setStyle(images[12+PlayerNum]);
                     car.setLayoutX((PlayerNum<2)? 0 : 755);
                     car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
                     car.setFitHeight(130);
+
+                    ScoreListener.sendScore(distance);
                 }
 
-                //--------------Движение препятствий-----------------
+                //--------------�������� �����������-----------------
                 enemy1.setLayoutY(enemy1.getLayoutY() + enemy_speed);
                 enemy2.setLayoutY(enemy2.getLayoutY() + enemy_speed);
-                if (enemy1.getLayoutY() > 600)
-                    enemy1.setLayoutY(-150);
-                if (enemy2.getLayoutY() > 600)
-                    enemy2.setLayoutY(-300);
+
+                if (enemies[0].getLayoutY() >= 600) {
+                    enemies[0].setLayoutY(left_enemy[index_l]);
+                    index_l++;
+                    if(index_l>1)
+                        index_l=0;
+                }
+                if (enemies[1].getLayoutY() >= 600) {
+                    enemies[1].setLayoutY(left_enemy[index_r]);
+                    index_r++;
+                    if(index_r>1)
+                        index_r=0;
+                }
 
                 if(playersCount>1) {
-                    enemy3.setLayoutY(enemy3.getLayoutY() + enemy_speed);
-                    enemy4.setLayoutY(enemy4.getLayoutY() + enemy_speed);
-                    if (enemy3.getLayoutY() > 600)
-                        enemy3.setLayoutY(-150);
-                    if (enemy4.getLayoutY() > 600)
-                        enemy4.setLayoutY(-300);
+                    enemies[2].setLayoutY(enemies[0].getLayoutY());
+                    enemies[3].setLayoutY(enemies[1].getLayoutY());
                 }
                 if(playersCount>2) {
-                    enemy5.setLayoutY(enemy5.getLayoutY() + enemy_speed);
-                    enemy6.setLayoutY(enemy6.getLayoutY() + enemy_speed);
-                    if (enemy5.getLayoutY() > 600)
-                        enemy5.setLayoutY(-150);
-                    if (enemy6.getLayoutY() > 600)
-                        enemy6.setLayoutY(-300);
+                    enemies[4].setLayoutY(enemies[0].getLayoutY());
+                    enemies[5].setLayoutY(enemies[1].getLayoutY());
                 }
                 if(playersCount>3) {
-                    enemy7.setLayoutY(enemy7.getLayoutY() + enemy_speed);
-                    enemy8.setLayoutY(enemy8.getLayoutY() + enemy_speed);
-                    if (enemy7.getLayoutY() > 600)
-                        enemy7.setLayoutY(-150);
-                    if (enemy8.getLayoutY() > 600)
-                        enemy8.setLayoutY(-300);
+                    enemies[6].setLayoutY(enemies[0].getLayoutY());
+                    enemies[7].setLayoutY(enemies[1].getLayoutY());
+
                 }
-                //--------------Движение препятствий-----------------
+                //--------------�������� �����������-----------------
 
 
-                //   music.play();
-                distance += speed / 10;
+                if(alive)
+                    distance += 1;
 
-                //Движение трассы--------------------------
+                if(distance==1300){
+                    speed =40;
+                    enemy_speed = 30;
+                }
+                else
+                    if(distance==800){
+                        speed = 35;
+                        enemy_speed = 25;
+                    }
+                    else
+                        if(distance==450) {
+                            speed = 30;
+                            enemy_speed = 20;
+                        }
+                        else
+                            if(distance==150) {
+                                speed = 25;
+                                enemy_speed = 15;
+                            }
+
+                //�������� ������--------------------------
                 pane2.setLayoutY(pane2.getLayoutY() + speed);
                 pane3.setLayoutY(pane3.getLayoutY() + speed);
 
@@ -217,7 +253,7 @@ public class Player extends Thread {
                     pane3.setLayoutY(-600);
                 //-----------------------------------------
 
-                //Обработчик нажатия на клавиши------------
+                //���������� ������� �� �������------------
                 mainPane.setOnKeyPressed((event) -> {
                     if (event.getCode() == KeyCode.LEFT && alive) {
                         while (car.getLayoutX() > MAX_LEFT) {
@@ -260,26 +296,34 @@ public class Player extends Thread {
                 sb.append("\r\n");
 
                 Output output = new Output(socket, PlayerNum, car.getLayoutX());
-                output.send();
+                try {
+                    if (isConnectionAvaible)
+                        output.send();
+                } catch (DisconnectException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                    //TODO alert
+                    isConnectionAvaible = false;
+                }
 
                 try {
                     Thread.sleep(40);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
             else
             {
-                for (int i=0; i<playersCount; i++){
-                    if (i != clientNumber)
-                        System.out.println(Data.getData(i));
+                if(Data.getData(PlayerNum)!=null){
+                    if(Double.parseDouble(Data.getData(PlayerNum))==0){
+                        car.setStyle(images[12+PlayerNum]);
+                        car.setFitHeight(130);
+                        car.setLayoutX(0);
+                        car.setLayoutY((PlayerNum%2 == 1)? 200 : 420);
+                    }
+                    else
+                        car.setLayoutX(Double.parseDouble(Data.getData(PlayerNum)));
                 }
-                /*
-                * TODO: получаем данные, отрисовываем в зависимости от положения игрока
-                * TODO: он скачала null-ы хуячит, потому что передача не успела пройти, добавить условие на проверку на null
-                * TODO: i - номер игрока (на данный момент играем 2 игроком, получаем у 2 координаты 1-го)
-                */
+
             }
 
         }

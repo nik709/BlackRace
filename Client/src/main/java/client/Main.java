@@ -1,5 +1,8 @@
 package client;
 
+import client.listeners.LogInListener;
+import client.listeners.RegistrationListener;
+import client.messager.Data;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -25,6 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+
+import javax.swing.*;
+import java.io.IOException;
+import java.net.Socket;
 
 public class Main extends Application {
     @Override
@@ -107,7 +114,10 @@ public class Main extends Application {
             Button button = new Button("Join");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1->{
+                registration(userTextField.getText(), pwBox.getText());
+                primaryStage.setScene(scene);
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");
@@ -149,7 +159,17 @@ public class Main extends Application {
             Button button = new Button("Sign in");
             button.setAlignment(Pos.CENTER);
             button.setPrefWidth(60);
-            button.setOnMouseClicked(event1->primaryStage.setScene(main_scene));
+            button.setOnMouseClicked(event1->{
+                boolean flag = LogInListener.checkUser(userTextField.getText(), pwBox.getText());
+                if (flag) {
+                    Data.setName(userTextField.getText());
+                    primaryStage.setScene(main_scene);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Invalid username or password!","Error",JOptionPane.ERROR_MESSAGE);
+                    //TODO alert
+                }
+            });
             grid.add(button, 1, 4);
 
             Button button_back = new Button("Back");
@@ -169,6 +189,10 @@ public class Main extends Application {
         primaryStage.setTitle("Black Race");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void registration(String userName, String password) {
+        RegistrationListener.sendRequestForRegistrate(userName, password);
     }
 
     private static class MenuItem extends StackPane{
