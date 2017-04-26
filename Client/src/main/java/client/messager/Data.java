@@ -12,6 +12,7 @@ public class Data {
 
     private static List<String> data = new ArrayList<>();
     private static String name;
+    public static HashMap<Integer, Integer> quantity;
 
     synchronized public static void addData(Integer index, String s){
         if (data.isEmpty()){

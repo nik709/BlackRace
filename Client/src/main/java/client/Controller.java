@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import client.messager.Data;
 
 public class Controller {
 
@@ -30,12 +30,17 @@ public class Controller {
 
     public void begin(ActionEvent actionEvent) {
 
-        Map<Integer, Integer> map = QuantityListener.sendRequest();
+        //Map<Integer, Integer> map = QuantityListener.sendRequest();
+        Map<Integer, Integer> map = Data.quantity;
+        Integer number=0;
 
-        PlayersCount = map.keySet().iterator().next();
+        if(map!=null && !map.isEmpty()) {
+            PlayersCount = map.keySet().iterator().next();
+            number = map.get(PlayersCount);
+        }
+        QuantityListener.printMap();
+
         System.out.println("Players: " + PlayersCount);
-
-        Integer number = map.get(PlayersCount);
 
         Player[] player = new Player[PlayersCount];
         String[] PlayersNames = new String[PlayersCount];
@@ -49,6 +54,11 @@ public class Controller {
         images[1] = testCar2;
         images[2] = testCar3;
         images[3] = testCar4;
+
+        System.out.print("Number ");
+        System.out.println(number);
+        System.out.print("PlayersCount ");
+        System.out.println(PlayersCount);
 
         for (int i = 0; i < PlayersCount; i++) {
             player[i] = new Player(images[i], police1, police2, police3, police4, police5, police6, police7, police8,

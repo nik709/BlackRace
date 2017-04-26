@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -14,6 +16,7 @@ import java.util.StringTokenizer;
  */
 public class QuantityListener {
 
+    public static HashMap<Integer, Integer> testMap;
 
     public static HashMap<Integer, Integer> sendRequest(){
         Integer quantity = null;
@@ -53,7 +56,24 @@ public class QuantityListener {
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(quantity, number);
 
+        testMap = map;
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return map;
+    }
+
+    public static void printMap(){
+        Iterator ik = testMap.keySet().iterator();
+        while (ik.hasNext())
+            System.out.println(" Key: " + ik.next());
+
+        Iterator iv = testMap.values().iterator();
+        while (iv.hasNext())
+            System.out.println(" Value: " + iv.next());
     }
 
 }

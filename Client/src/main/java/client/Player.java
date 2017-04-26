@@ -59,6 +59,7 @@ public class Player extends Thread {
     public Player(ImageView car,ImageView police1,ImageView police2,ImageView police3,ImageView police4,
                   ImageView police5,ImageView police6,ImageView police7,ImageView police8,
                   String playerName, Pane pane2, Pane pane3, Pane mainPane,int playersCount,int num, int clientNumber){
+
         this.car = car;
         this.playerName = playerName;
         this.clientNumber = clientNumber;
@@ -303,6 +304,7 @@ public class Player extends Thread {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
                     //TODO alert
                     isConnectionAvaible = false;
+                    System.exit(0);
                 }
 
                 try {

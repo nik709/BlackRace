@@ -27,11 +27,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+import client.listeners.QuantityListener;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.net.Socket;
 
 public class Main extends Application {
     @Override
@@ -75,13 +73,20 @@ public class Main extends Application {
         Scene main_scene = new Scene(main_root,800,600);
         menuBox_2.setVisible(true);
 
-
+        newGame.setOnMouseClicked((event) -> {
+            Data.quantity = QuantityListener.sendRequest();
+            QuantityListener.printMap();
+            primaryStage.setTitle("Black Race");
+            primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
+            primaryStage.show();
+        });
+        /*
         newGame.setOnMouseClicked((event) -> {
             primaryStage.setTitle("Black Race");
             primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
             primaryStage.show();
         });
-
+*/
         registration.setOnMouseClicked((event) -> {
             GridPane grid = new GridPane();
             grid.setAlignment(Pos.CENTER);
