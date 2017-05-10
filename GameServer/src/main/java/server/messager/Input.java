@@ -117,10 +117,13 @@ public class Input extends Thread {
                             sb.append("q");
                             sb.append(maxUsers);
                             sb.append("q");
-                            sb.append(quantity.get(quantity.size()-1));
+                            Integer quan = quantity.get(quantity.size()-1);
+                            sb.append(quan);
                             sb.append("q");
 
                             quantity.remove(quantity.size()-1);
+
+                            System.out.println("Number:" + quan);
 
                             response.writeUTF(sb.toString());
                             response.flush();
