@@ -1,6 +1,7 @@
 package client;
 
 import client.listeners.QuantityListener;
+import client.messager.Data;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
@@ -30,10 +31,13 @@ public class Controller {
 
     public void begin(ActionEvent actionEvent) {
 
-        Map<Integer, Integer> map = QuantityListener.sendRequest();
+        Map<Integer, Integer> map = Data.quantity;
+
+
+        System.out.println("Map:");
+        System.out.println("    Key Set: " + map.keySet().isEmpty());
 
         PlayersCount = map.keySet().iterator().next();
-        System.out.println("Players: " + PlayersCount);
 
         Integer number = map.get(PlayersCount);
 

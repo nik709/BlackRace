@@ -1,6 +1,7 @@
 package client;
 
 import client.listeners.LogInListener;
+import client.listeners.QuantityListener;
 import client.listeners.RegistrationListener;
 import client.messager.Data;
 import javafx.animation.*;
@@ -27,10 +28,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-
-import java.io.IOException;
-import java.net.Socket;
 
 public class Main extends Application {
     @Override
@@ -76,6 +73,8 @@ public class Main extends Application {
 
 
         newGame.setOnMouseClicked((event) -> {
+            Data.quantity = QuantityListener.sendRequest();
+            QuantityListener.printMap();
             primaryStage.setTitle("Black Race");
             primaryStage.setScene(new Scene(rootForNewGame, 800, 600));
             primaryStage.show();
@@ -187,6 +186,8 @@ public class Main extends Application {
         primaryStage.setTitle("Black Race");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
     }
 
     private void registration(String userName, String password) {
