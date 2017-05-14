@@ -17,14 +17,14 @@
         tools:layout_editor_absoluteY="80dp">
 
         <EditText
-            android:id="@+id/editText6"
+            android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/editPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

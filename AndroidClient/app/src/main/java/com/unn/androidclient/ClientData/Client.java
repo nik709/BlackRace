@@ -13,7 +13,8 @@ public class Client {
     public void run(){
         try {
             socket = new Socket("10.0.2.2", 1789);
-            System.out.println("Successfull");
+            System.out.println("Successful");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
+import com.unn.androidclient.ClickListeners.LoginClickListener;
 import com.unn.androidclient.ClientData.Client;
-import com.unn.androidclient.Tasks.ConnectionTask;
 
 import java.net.Socket;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -22,6 +22,10 @@ public class MainActivityFragment extends Fragment {
     Button login;
     Client client = new Client();
     Socket socket;
+    boolean isAccess = false;
+    MainMenu mainMenu;
+    EditText name;
+    EditText password;
 
     public MainActivityFragment() {
     }
@@ -32,20 +36,17 @@ public class MainActivityFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_main, container, false);
         view.setFocusableInTouchMode(true);
         view.requestFocus();
-        login = (Button) view.findViewById(R.id.loginB1);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConnectionTask connectionTask = new ConnectionTask();
-                try {
-                    socket = connectionTask.execute(client).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        init();
+        login.setOnClickListener(new LoginClickListener(socket, client,
+                name.getText().toString(), password.getText().toString(),
+                getFragmentManager()));
         return view;
+    }
+
+    private void init(){
+
+        login = (Button) view.findViewById(R.id.loginB1);
+        name = (EditText) view.findViewById(R.id.editName);
+        password = (EditText) view.findViewById(R.id.editPass);
     }
 }
